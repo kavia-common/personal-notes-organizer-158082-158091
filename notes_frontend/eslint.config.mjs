@@ -42,7 +42,14 @@ export default [
       "@typescript-eslint": tseslint,
     },
     rules: {
-      // Your custom rules here
+      // Allow unused parameters in constructors (common in Angular DI)
+      "@typescript-eslint/no-unused-vars": ["error", { 
+        "argsIgnorePattern": "^_",
+        "varsIgnorePattern": "^_",
+        "caughtErrorsIgnorePattern": "^_"
+      }],
+      "no-unused-vars": "off", // Use TypeScript version instead
+      "no-undef": "off", // TypeScript handles this
     },
   },
 ];

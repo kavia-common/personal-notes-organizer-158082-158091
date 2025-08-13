@@ -1,3 +1,38 @@
-<div class="container">
-  <h1>{{ title }}</h1>
+<div class="app-container">
+  <!-- Mobile Header -->
+  <div class="mobile-header">
+    <button class="mobile-menu-btn" (click)="toggleMobileMenu()">
+      <span class="hamburger"></span>
+    </button>
+    <h1>Notes</h1>
+  </div>
+
+  <!-- Main Layout -->
+  <div class="app-layout">
+    <!-- Sidebar -->
+    <div class="sidebar-container" [class.mobile-open]="isMobileMenuOpen">
+      <app-sidebar
+        (noteSelected)="onNoteSelected($event)"
+        (createNewNote)="onCreateNewNote()"
+      ></app-sidebar>
+    </div>
+
+    <!-- Mobile Overlay -->
+    <div 
+      class="mobile-overlay" 
+      [class.visible]="isMobileMenuOpen"
+      (click)="closeMobileMenu()"
+    ></div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+      <app-note-editor
+        [selectedNote]="selectedNote"
+        [isCreatingNew]="isCreatingNew"
+        (noteSaved)="onNoteSaved($event)"
+        (noteDeleted)="onNoteDeleted($event)"
+        (editorClosed)="onEditorClosed()"
+      ></app-note-editor>
+    </div>
+  </div>
 </div>

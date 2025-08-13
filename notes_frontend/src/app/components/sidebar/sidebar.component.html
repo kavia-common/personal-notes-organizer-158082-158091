@@ -1,0 +1,50 @@
+<div class="sidebar">
+  <div class="sidebar-header">
+    <h2>My Notes</h2>
+    <button class="btn-primary" (click)="onCreateNew()">
+      <span class="icon">+</span>
+      New Note
+    </button>
+  </div>
+
+  <div class="search-container">
+    <input
+      type="text"
+      placeholder="Search notes..."
+      [(ngModel)]="searchQuery"
+      (input)="onSearch()"
+      class="search-input"
+    />
+  </div>
+
+  <div class="notes-list">
+    <div *ngIf="isLoading" class="loading">
+      Loading notes...
+    </div>
+
+    <div *ngIf="error" class="error">
+      {{ error }}
+      <button class="retry-btn" (click)="loadNotes()">Retry</button>
+    </div>
+
+    <div *ngIf="!isLoading && !error && filteredNotes.length === 0" class="empty-state">
+      <div *ngIf="searchQuery; else noNotes">
+        No notes found for "{{ searchQuery }}"
+      </div>
+      <ng-template #noNotes>
+        <div>No notes yet. Create your first note!</div>
+      </ng-template>
+    </div>
+
+    <div
+      *ngFor="let note of filteredNotes"
+      class="note-item"
+      [class.selected]="selectedNoteId === note.id"
+      (click)="onNoteSelect(note)"
+    >
+      <div class="note-title">{{ note.title || 'Untitled' }}</div>
+      <div class="note-preview">{{ note.content | slice:0:80 }}{{ note.content.length > 80 ? '...' : '' }}</div>
+      <div class="note-date">{{ note.updated_at | date:'short' }}</div>
+    </div>
+  </div>
+</div>

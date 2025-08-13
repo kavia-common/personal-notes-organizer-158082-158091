@@ -1,0 +1,73 @@
+<div class="note-editor" *ngIf="selectedNote || isCreatingNew">
+  <div class="editor-header">
+    <div class="editor-title">
+      {{ isCreatingNew ? 'Create New Note' : 'Edit Note' }}
+    </div>
+    <div class="editor-actions">
+      <button
+        class="btn-secondary"
+        (click)="closeEditor()"
+        [disabled]="isSaving || isDeleting"
+      >
+        Close
+      </button>
+      <button
+        class="btn-danger"
+        *ngIf="!isCreatingNew && selectedNote"
+        (click)="deleteNote()"
+        [disabled]="isSaving || isDeleting"
+      >
+        {{ isDeleting ? 'Deleting...' : 'Delete' }}
+      </button>
+      <button
+        class="btn-primary"
+        (click)="saveNote()"
+        [disabled]="isSaveDisabled"
+      >
+        {{ isSaving ? 'Saving...' : 'Save' }}
+      </button>
+    </div>
+  </div>
+
+  <div class="editor-content">
+    <div *ngIf="error" class="error-message">
+      {{ error }}
+    </div>
+
+    <div class="form-group">
+      <label for="noteTitle">Title</label>
+      <input
+        id="noteTitle"
+        type="text"
+        placeholder="Enter note title..."
+        [(ngModel)]="title"
+        (input)="onInputChange()"
+        class="title-input"
+        [disabled]="isSaving || isDeleting"
+      />
+    </div>
+
+    <div class="form-group content-group">
+      <label for="noteContent">Content</label>
+      <textarea
+        id="noteContent"
+        placeholder="Start writing your note..."
+        [(ngModel)]="content"
+        (input)="onInputChange()"
+        class="content-textarea"
+        [disabled]="isSaving || isDeleting"
+      ></textarea>
+    </div>
+
+    <div class="editor-status" *ngIf="hasUnsavedChanges">
+      <span class="unsaved-indicator">• Unsaved changes</span>
+    </div>
+  </div>
+</div>
+
+<div class="empty-editor" *ngIf="!selectedNote && !isCreatingNew">
+  <div class="empty-message">
+    <h3>Welcome to Notes</h3>
+    <p>Select a note from the sidebar to view or edit it, or create a new note to get started.</p>
+  </div>
+</div>
